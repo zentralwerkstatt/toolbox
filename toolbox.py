@@ -70,3 +70,23 @@ def get_all_files(folder, ext=None):
 
 def sort_dict(d):
     return dict(sorted(d.items(), key=lambda x: x[1]))
+
+def from_device(tensor):
+    return tensor.detach().cpu().numpy()
+
+def plot_imgs_features(files, s, features):
+    d = ceil(sqrt(len(files)))
+    
+    # Set up canvas
+    # As images are anchored in the upper left corner increase size by 1
+    canvas = np.ones(((d+1)*s, (d+1)*s, 3), dtype=np.uint8) * 255
+
+    for i, file_ in enumerate(tqdm(files)):
+        img = PIL.Image.open(file_).convert("RGB")
+        img.thumbnail((s, s))
+        npimg = np.array(img)
+        y = int(features[i,0] * (d*s))
+        x = int(features[i,1] * (d*s))  
+        canvas[y:y+npimg.shape[0], x:x+npimg.shape[1], :] = npimg
+                
+    return canvas
