@@ -10,7 +10,6 @@ import numpy as np
 import torch as t
 import torchvision as tv
 import torch.nn as nn
-import clip
 
 
 # Returns an image from an URL as a PIL image
@@ -112,7 +111,7 @@ class Embedder_VGG19():
             output = self.model(self.transforms(img).unsqueeze(0).to(self.device))
             return from_device(output).astype(np.float32).flatten()
 
-class Embedder_CLIP():
+class Embedder_CLIP(clip):
     def __init__(self, device="cpu"):
         self.device = device
         self.feature_length = 512
