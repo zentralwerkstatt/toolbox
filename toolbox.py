@@ -76,18 +76,16 @@ def plot_imgs_grid(paths, s):
     canvas = np.ones((dy*s, dx*s, 3), dtype=np.uint8) * 255
 
     # Plot images
-    with tqdm(total=d**2) as pbar:
-        for y in range(dy):            
-            for x in range(dx):
-                #print(y,x)
-                pos = y*dx+x
-                if pos==(len(paths)):
-                    break
-                img = PIL.Image.open(paths[pos]).convert("RGB")
-                img.thumbnail((s, s))
-                npimg = np.array(img)
-                canvas[y*s:y*s+npimg.shape[0], x*s:x*s+npimg.shape[1], :] = npimg
-                pbar.update(1)
+    for y in range(dy):            
+        for x in range(dx):
+            #print(y,x)
+            pos = y*dx+x
+            if pos==(len(paths)):
+                break
+            img = PIL.Image.open(paths[pos]).convert("RGB")
+            img.thumbnail((s, s))
+            npimg = np.array(img)
+            canvas[y*s:y*s+npimg.shape[0], x*s:x*s+npimg.shape[1], :] = npimg
                 
     return PIL.Image.fromarray(canvas)
 
