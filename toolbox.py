@@ -8,6 +8,30 @@ from math import floor, ceil, sqrt
 from tqdm.notebook import tqdm
 import numpy as np
 import seaborn as sns
+import clip
+import torch as t
+
+def set_cuda():
+    device = "cuda" if t.cuda.is_available() else "cpu"
+    return device
+
+device = set_cuda()
+model, transforms = clip.load("ViT-B/32", device=device)
+
+def from_device(tensor):
+    return tensor.detach().cpu().numpy()
+
+def CLIP_img(img):
+    with t.no_grad():
+        input_ = transforms(img).unsqueeze(0).to(device)
+        output = model.encode_image(input_)
+        output /= output.norm(dim=-1, keepdim=True)
+        return from_device(output).astype(np.float32).flatten()
+
+def flatten_img(img, s):
+    img = img.resize((s,s))
+    img_np = np.array(img)
+    return img_np.flatten()
 
 # Returns an image from an URL as a PIL image
 def img_from_url(url, max_tries=10):
