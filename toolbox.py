@@ -10,6 +10,7 @@ import numpy as np
 import seaborn as sns
 import clip
 import torch as t
+from umap import UMAP
 
 def set_cuda():
     device = "cuda" if t.cuda.is_available() else "cpu"
@@ -32,6 +33,13 @@ def flatten_img(img, s):
     img = img.resize((s,s))
     img_np = np.array(img)
     return img_np.flatten()
+
+def reduce_features(features):
+    reducer = UMAP()
+    reduced_features = reducer.fit_transform(features)
+    reduced_features -= reduced_features.min(axis=0)
+    reduced_features /= reduced_features.max(axis=0)
+    return reduced_features
 
 # Returns an image from an URL as a PIL image
 def img_from_url(url, max_tries=10):
