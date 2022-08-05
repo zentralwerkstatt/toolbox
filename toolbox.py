@@ -11,6 +11,7 @@ import seaborn as sns
 import clip
 import torch as t
 from umap import UMAP
+from IPython import display
 
 def set_cuda():
     device = "cuda" if t.cuda.is_available() else "cpu"
@@ -56,6 +57,9 @@ def img_from_url(url, max_tries=10):
 
 def load_img(path):
     return PIL.Image.open(path).convert("RGB")
+
+def show_img(img):
+    display(img)
 
 def new_dir(folder):
     os.makedirs(folder, exist_ok=True)
