@@ -11,7 +11,7 @@ import seaborn as sns
 import clip
 import torch as t
 from umap import UMAP
-from IPython import display
+from IPython.display import display
 
 def set_cuda():
     device = "cuda" if t.cuda.is_available() else "cpu"
