@@ -55,6 +55,11 @@ def img_from_url(url, max_tries=10):
             tries += 1
         time.sleep(1)
 
+def wget(url, path):
+    data = requests.get(url).content
+    with open(path, "wb") as f:
+        f.write(data)
+
 def load_img(path):
     return PIL.Image.open(path).convert("RGB")
 
