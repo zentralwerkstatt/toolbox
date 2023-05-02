@@ -12,6 +12,7 @@ import clip
 import torch as t
 from umap import UMAP
 from IPython.display import display
+import filetype
 
 def set_cuda():
     device = "cuda" if t.cuda.is_available() else "cpu"
@@ -73,8 +74,14 @@ def new_dir(folder):
 def wgets(urls, folder):
     new_dir(folder)
     for i, url in enumerate(tqdm(urls)):
-        ext = url[-3]
-        wget(url, os.path.join(folder, f"{i:010d}.{ext}"))
+        path = f"{folder}/{i:010d}"
+        wget(url, path)
+        kind = filetype.guess(path)
+        if kind is None:
+            ext = ""
+        else:
+            ext = kind.extension
+        os.rename(path, path + f".{ext}")
 
 def make_palette(colors, height=50, width=300):
     palette = np.zeros((height, width, 3), np.uint8)
