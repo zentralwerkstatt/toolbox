@@ -70,6 +70,12 @@ def new_dir(folder):
     os.makedirs(folder, exist_ok=True)
     return folder
 
+def wgets(urls, folder):
+    new_dir(folder)
+    for i, url in enumerate(tqdm(urls)):
+        ext = url[-3]
+        wget(url, os.path.join(folder, f"{i:010d}.{ext}"))
+
 def make_palette(colors, height=50, width=300):
     palette = np.zeros((height, width, 3), np.uint8)
     steps = width/len(colors)
