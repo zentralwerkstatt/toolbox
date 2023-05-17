@@ -80,8 +80,8 @@ def wgets(urls, folder):
         if kind is None:
             ext = ""
         else:
-            ext = kind.extension
-        os.rename(path, path + f".{ext}")
+            ext = "." + kind.extension
+        os.rename(path, path + ext)
 
 def make_palette(colors, height=50, width=300):
     palette = np.zeros((height, width, 3), np.uint8)
